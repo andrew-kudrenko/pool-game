@@ -1,0 +1,19 @@
+:root {
+  background-color: rgb(50, 50, 55);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+#app > #balls-canvas {
+  position: absolute;
+  border: 2px solid rgba(180, 34, 146);
+}
+
+#app > #table-canvas {
+  position: absolute;
+  border: 2px solid rgb(34, 163, 180);
+}
