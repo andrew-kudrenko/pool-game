@@ -1,8 +1,8 @@
-import { IntVector } from "../common/vector/int-vector";
+import { Vector } from "../common/vector/vector";
 
 export class Sprite {
-  public readonly size = new IntVector();
-  public readonly coords = new IntVector();
+  public readonly size = new Vector();
+  public readonly coords = new Vector();
 
   constructor(public source: HTMLImageElement) {}
 }

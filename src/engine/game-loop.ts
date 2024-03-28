@@ -1,24 +1,55 @@
+export const enum GameLoopState {
+  Idle = "idle",
+  Running = "running",
+  Paused = "paused",
+  Done = "done",
+}
+
 export class GameLoop {
-  public isRunning = false;
+  private _state = GameLoopState.Idle;
+  private _executor: VoidFunction;
+  private _done?: VoidFunction;
 
-  public run(loop: VoidFunction) {
-    this.isRunning = true;
+  constructor(executor: VoidFunction) {
+    this._executor = () => {
+      executor();
 
-    let execute = () => {
-      loop();
-      requestAnimationFrame(execute);
-    };
-
-    return new Promise<void>((ok) => {
-      if (!this.isRunning) {
-        ok();
+      if (this._state === GameLoopState.Running) {
+        requestAnimationFrame(this._executor);
       }
+    };
+  }
 
-      execute();
-    });
+  public start() {
+    if (this._state === GameLoopState.Idle) {
+      this._state = GameLoopState.Running;
+
+      return new Promise<void>((ok) => {
+        this._done = ok;
+        this._executor();
+      });
+    }
+
+    throw new Error("Game Loop can't be started");
+  }
+
+  public resume() {
+    if (this._state === GameLoopState.Paused) {
+      this._state = GameLoopState.Running;
+      this._executor();
+    }
+  }
+
+  public pause() {
+    if (this._state === GameLoopState.Running) {
+      this._state = GameLoopState.Paused;
+    }
   }
 
   public stop() {
-    this.isRunning = false;
+    if (this._state !== GameLoopState.Done) {
+      this._state = GameLoopState.Done;
+      this._done?.();
+    }
   }
 }

@@ -1,6 +1,5 @@
-import { IntVector } from "../common/vector/int-vector";
+import { Vector } from "../common/vector/vector";
 
 export class Position {
-  public readonly coords = new IntVector();
-  public readonly size = new IntVector();
+  constructor(public readonly coords = new Vector()) {}
 }

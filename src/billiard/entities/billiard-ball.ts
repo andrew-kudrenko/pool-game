@@ -1,9 +1,10 @@
-import { Position } from "../../entity/position";
+import { Movement } from "../../entity/movement";
+import { CirclePosition } from "../../entity/circle-position";
+import { ShapeStyle } from "../../entity/shape-style";
+import { MoveableCircle } from "../../entity/entity.types";
 
-export class BilliardBall {
-  public readonly position = new Position();
-  public radius: number = 20;
-  public color = "red";
-  public borderColor = "cyan";
-  public borderWidth = 2;
+export class BilliardBall implements MoveableCircle {
+  public readonly position = new CirclePosition();
+  public readonly movement = new Movement();
+  public readonly style = new ShapeStyle();
 }
