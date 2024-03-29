@@ -1,5 +1,4 @@
 import { Vector } from "../common/vector";
-import { CirclePosition } from "../entity/circle-position";
 import { MoveableCircle } from "../entity/entity.types";
 
 export class CircleCollider {
