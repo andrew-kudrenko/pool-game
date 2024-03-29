@@ -1,7 +1,7 @@
-import { RectPosition } from "../../entity/rect-position";
-import { CircleCollider } from "../../physics/circle-collider";
-import { randomRgb } from "../../utils/color.utils";
-import { randomDouble, randomInt } from "../../utils/random.utils";
+import { RectPosition } from "../../engine/entity/rect-position";
+import { CircleCollider } from "../../engine/physics/circle-collider";
+import { randomRgb } from "../../engine/utils/color.utils";
+import { randomDouble, randomInt } from "../../engine/utils/random.utils";
 import { BilliardBall } from "./billiard-ball";
 
 export class BilliardBallFactory {

@@ -1,7 +1,7 @@
-import { Movement } from "../../entity/movement";
-import { CirclePosition } from "../../entity/circle-position";
-import { ShapeStyle } from "../../entity/shape-style";
-import { MoveableCircle } from "../../entity/entity.types";
+import { Movement } from "../../engine/entity/movement";
+import { CirclePosition } from "../../engine/entity/circle-position";
+import { ShapeStyle } from "../../engine/entity/shape-style";
+import { MoveableCircle } from "../../engine/entity/entity.types";
 
 export class BilliardBall implements MoveableCircle {
   public readonly position = new CirclePosition();

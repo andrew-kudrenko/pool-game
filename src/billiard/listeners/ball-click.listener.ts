@@ -1,5 +1,5 @@
-import { Vector } from "../../common/vector";
-import { CircleCollider } from "../../physics/circle-collider";
+import { Vector } from "../../engine/common/vector";
+import { CircleCollider } from "../../engine/physics/circle-collider";
 import { BilliardBall } from "../entities/billiard-ball";
 
 const enum BallEventKind {

@@ -1,26 +1,33 @@
-import { FrictionForceEffect } from "../effects/friction-force.effect";
-import { MoveEffect } from "../effects/move.effect";
-import { ResolveCircleCollisionEffect } from "../effects/resolve-circle-collision.effect";
-import { RectPosition } from "../entity/rect-position";
-import { CanvasRenderer } from "../graphics/canvas-renderer";
-import { CircleCollider } from "../physics/circle-collider";
-import { BallClickListener } from "./controls/ball-click.listener";
+import { FrictionForceEffect } from "../engine/effects/friction-force.effect";
+import { MoveEffect } from "../engine/effects/move.effect";
+import { ResolveCircleCollisionEffect } from "../engine/effects/resolve-circle-collision.effect";
+import { RectPosition } from "../engine/entity/rect-position";
+import { CanvasRenderer } from "../engine/graphics/canvas-renderer";
+import { CircleCollider } from "../engine/physics/circle-collider";
+import { BallClickListener } from "./listeners/ball-click.listener";
 import { BallsCollisionEffect } from "./effects/balls-collision.effect";
 import { BoundsCollisionEffect } from "./effects/bounds-collision.effect";
 import { BilliardBall } from "./entities/billiard-ball";
 import { BilliardBallFactory } from "./entities/billiard-ball.factory";
+import { GameLoop } from "../engine/control/game-loop";
+import { KeyboardListener } from "../engine/listeners/keyboard.listener";
 
 export class Billiard {
   private static readonly MAX_BALLS_COUNT = 35;
+  private readonly _balls: BilliardBall[] = [];
   private readonly _collider: CircleCollider;
   private readonly _ballFactory: BilliardBallFactory;
-  private readonly _balls: BilliardBall[] = [];
   private readonly _effects;
   private _shoundGenerateBallsCount = 0;
 
   public readonly clickListener: BallClickListener;
+  public readonly loop: GameLoop;
 
-  constructor(private readonly _canvas: CanvasRenderer, area: RectPosition) {
+  constructor(
+    private readonly _canvas: CanvasRenderer,
+    private readonly _keyboard: KeyboardListener,
+    area: RectPosition
+  ) {
     this._collider = new CircleCollider();
     this._ballFactory = new BilliardBallFactory(area, this._collider);
     this._effects = {
@@ -32,12 +39,36 @@ export class Billiard {
     } as const;
     this.clickListener = new BallClickListener(_canvas.ctx.canvas, this._balls, this._collider);
 
-    for (let i = 0; i < Billiard.MAX_BALLS_COUNT / 3; i++) {
-      this._balls.push(this._ballFactory.generate(this._balls));
+    this.initBalls();
+
+    this.loop = new GameLoop(() => {
+      this._keyboard.update();
+      this.update();
+    });
+  }
+
+  public restart() {
+    this.loop.stop();
+    this._canvas.clearAll();
+
+    this.initBalls();
+
+    return this.loop.start();
+  }
+
+  public scheduleGenerateRandomBall() {
+    if (this._balls.length < Billiard.MAX_BALLS_COUNT) {
+      this._shoundGenerateBallsCount++;
+    } else if (this._shoundGenerateBallsCount !== 0) {
+      this._shoundGenerateBallsCount = 0;
     }
   }
 
-  public update() {
+  public setRandomVelocity(ball: BilliardBall) {
+    this._ballFactory.setRandomVelocity(ball);
+  }
+
+  private update() {
     for (let i = 0; i < this._balls.length; i++) {
       this._canvas.clearCircle(this._balls[i].position);
 
@@ -57,22 +88,18 @@ export class Billiard {
     }
   }
 
-  public scheduleGenerateRandomBall() {
-    if (this._balls.length < Billiard.MAX_BALLS_COUNT) {
-      this._shoundGenerateBallsCount++;
-    } else if (this._shoundGenerateBallsCount !== 0) {
-      this._shoundGenerateBallsCount = 0;
-    }
-  }
-
-  public setRandomVelocity(ball: BilliardBall) {
-    this._ballFactory.setRandomVelocity(ball);
-  }
-
   private tryAddRandomBall() {
     if (this._shoundGenerateBallsCount > 0) {
       this._balls.push(this._ballFactory.generate(this._balls));
       this._shoundGenerateBallsCount = 0;
+    }
+  }
+
+  private initBalls() {
+    this._balls.length = 0;
+
+    for (let i = 0; i < Billiard.MAX_BALLS_COUNT / 3; i++) {
+      this._balls.push(this._ballFactory.generate(this._balls));
     }
   }
 }
