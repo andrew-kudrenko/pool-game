@@ -1,29 +1,19 @@
 import { RectPosition } from "../../entity/rect-position";
 import { CircleCollider } from "../../physics/circle-collider";
-import {
-  randomDouble,
-  randomFromArray,
-  randomInt,
-} from "../../utils/random.utils";
+import { randomRgb } from "../../utils/color.utils";
+import { randomDouble, randomInt } from "../../utils/random.utils";
 import { BilliardBall } from "./billiard-ball";
 
 export class BilliardBallFactory {
-  private readonly _colors = ["red", "yellow", "white", "purple", "cyan"];
-  private _speedLimit = 7;
+  private static readonly SPEED_LIMIT = 8;
 
-  constructor(
-    private readonly _area: RectPosition,
-    private readonly _collider: CircleCollider
-  ) {}
+  constructor(private readonly _area: RectPosition, private readonly _collider: CircleCollider) {}
 
   public generate(balls: BilliardBall[]) {
     const ball = new BilliardBall();
 
-    ball.style.fillStyle = randomFromArray(this._colors);
-    ball.movement.velocity.set(
-      randomDouble(-this._speedLimit, this._speedLimit),
-      randomDouble(-this._speedLimit, this._speedLimit)
-    );
+    ball.style.fillStyle = randomRgb();
+    this.setRandomVelocity(ball);
 
     ball.position.radius = randomInt(10, 25);
 
@@ -41,6 +31,13 @@ export class BilliardBallFactory {
     } while (this.hasCollisions(ball, balls));
 
     return ball;
+  }
+
+  public setRandomVelocity(ball: BilliardBall) {
+    ball.movement.velocity.set(
+      randomDouble(-BilliardBallFactory.SPEED_LIMIT, BilliardBallFactory.SPEED_LIMIT),
+      randomDouble(-BilliardBallFactory.SPEED_LIMIT, BilliardBallFactory.SPEED_LIMIT)
+    );
   }
 
   private hasCollisions(ball: BilliardBall, balls: BilliardBall[]) {

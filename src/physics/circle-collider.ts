@@ -1,3 +1,4 @@
+import { Vector } from "../common/vector";
 import { CirclePosition } from "../entity/circle-position";
 import { MoveableCircle } from "../entity/entity.types";
 
@@ -54,14 +55,7 @@ export class CircleCollider {
         y12 * y21 +
         2 * x11 * x21 +
         2 * y11 * y21);
-    const c =
-      x11 * x11 -
-      2 * x11 * x21 +
-      x21 * x21 +
-      y11 * y11 -
-      2 * y11 * y21 +
-      y21 * y21 -
-      R * R;
+    const c = x11 * x11 - 2 * x11 * x21 + x21 * x21 + y11 * y11 - 2 * y11 * y21 + y21 * y21 - R * R;
 
     const D = b * b - 4 * a * c;
 
@@ -97,16 +91,20 @@ export class CircleCollider {
 
   public hasCollision(c1: MoveableCircle, c2: MoveableCircle) {
     return (
-      this.fastDistance(c1.position, c2.position) -
+      this.fastDistance(c1.position.coords, c2.position.coords) -
         c1.position.radius -
         c2.position.radius <=
       0
     );
   }
 
-  private fastDistance(c1: CirclePosition, c2: CirclePosition) {
-    const x = Math.abs(c1.coords.x - c2.coords.x);
-    const y = Math.abs(c1.coords.y - c2.coords.y);
+  public hasCollisionWithPoint(circle: MoveableCircle, point: Vector) {
+    return this.fastDistance(circle.position.coords, point) - circle.position.radius <= 0;
+  }
+
+  private fastDistance(c1: Vector, c2: Vector) {
+    const x = Math.abs(c1.x - c2.x);
+    const y = Math.abs(c1.y - c2.y);
     const min = Math.min(x, y);
 
     return x + y - (min >> 1) - (min >> 2) + (min >> 4);

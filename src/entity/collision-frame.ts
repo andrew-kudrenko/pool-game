@@ -1,4 +1,4 @@
-import { Vector } from "../common/vector/vector";
+import { Vector } from "../common/vector";
 
 export class CollisionFrame {
   public readonly coords = new Vector();

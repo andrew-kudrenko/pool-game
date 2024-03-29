@@ -1,4 +1,4 @@
-import { Vector } from "../common/vector/vector";
+import { Vector } from "../common/vector";
 
 export class Sprite {
   public readonly size = new Vector();

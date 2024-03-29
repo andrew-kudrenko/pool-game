@@ -7,11 +7,15 @@ import { Sprite } from "./sprite";
 const FULL_ROUND_ANGLE = Math.PI * 2;
 
 export class CanvasRenderer {
-  constructor(private readonly ctx: CanvasRenderingContext2D) {}
+  constructor(public readonly ctx: CanvasRenderingContext2D) {}
 
   public setSize(width: number, height: number) {
     this.ctx.canvas.width = width;
     this.ctx.canvas.height = height;
+  }
+
+  public clearAll() {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
   public drawCircle(position: CirclePosition, style: ShapeStyle) {
@@ -84,11 +88,6 @@ export class CanvasRenderer {
   }
 
   public clearRect(position: RectPosition) {
-    this.ctx.clearRect(
-      position.coords.x,
-      position.coords.y,
-      position.size.x,
-      position.size.y
-    );
+    this.ctx.clearRect(position.coords.x, position.coords.y, position.size.x, position.size.y);
   }
 }
