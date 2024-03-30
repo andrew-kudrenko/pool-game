@@ -4,6 +4,7 @@ import { Billiard } from "../billiard/billiard";
 import { createBilliard } from "../create-billiard";
 import { ColorPalette } from "../billiard/ui/color-palette.component";
 import { BilliardBall } from "../billiard/entities/billiard-ball";
+import { ControlsGuide } from "./controls-guide.component";
 
 export const App: React.FC = () => {
   const [selectedBall, setSelectedBall] = useState<BilliardBall | null>(null);
@@ -26,9 +27,17 @@ export const App: React.FC = () => {
 
   return (
     <>
-      <h1 className="title">Billiard Game</h1>
-      <div className="game">
-        <canvas className="balls-canvas" ref={canvasRef} />
+      <header className="app__header">
+        <h1 className="app__title">Billiard Game</h1>
+        <small>
+          <i>Для начала нажмите "r"</i>
+        </small>
+      </header>
+
+      <ControlsGuide />
+
+      <div className="app__game">
+        <canvas className="app__balls-canvas" ref={canvasRef} />
         <ColorPalette disabled={!selectedBall} onSelect={selectBallHandler} />
       </div>
     </>

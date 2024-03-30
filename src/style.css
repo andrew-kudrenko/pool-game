@@ -11,6 +11,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+li {
+  list-style-type: none;
+}
+
 .app {
   width: 100vw;
   height: 100vh;
@@ -21,19 +25,19 @@
 
   flex-direction: column;
   background-color: rgb(45, 88, 59);
-}
-
-.app > .title {
-  margin-bottom: 0.5rem;
   color: #fff;
 }
 
-.game {
+.app .app__header {
+  margin-bottom: 1rem;
+}
+
+.app .app__game {
   display: flex;
   gap: 0.5rem;
 }
 
-.balls-canvas {
+.app .app__balls-canvas {
   border: 2px solid rgb(29, 173, 24);
   border-radius: 5px;
   background-color: rgb(27, 56, 29);
@@ -70,4 +74,22 @@
   height: 50px;
 
   border: 1px solid #ccc;
+}
+
+.controls-guide {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.controls-list {
+  font-size: 0.85em;
+}
+
+.controls-list__title {
+  margin-bottom: 0.5rem;
+}
+
+.controls-list__list-item:nth-of-type(n + 1) {
+  margin-top: 0.35rem;
 }
